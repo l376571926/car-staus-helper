@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    signingConfigs {
+        mydebug {
+            storeFile file('keystore/platform.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+    compileSdk 25
+
+    defaultConfig {
+        applicationId "com.huawei.carstatushelper"
+        minSdk 21
+        targetSdk 32
+        versionCode 5
+        versionName "V1.0.4"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.mydebug
+            multiDexEnabled true
+        }
+        debug {
+            signingConfig signingConfigs.mydebug
+            multiDexEnabled true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'com.android.support:appcompat-v7:25.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:design:25.1.0'
+
+    implementation 'com.github.zhaokaiqiang.klog:library:1.6.0'
+}
