@@ -20,17 +20,17 @@ public class EnginePowerView extends DashboardView4 {
 
     @Override
     protected int setMin() {
-        return -40;
+        return -50;
     }
 
     @Override
     protected int setMax() {
-        return 140;
+        return 150;
     }
 
     @Override
     protected int setSection() {
-        return 18;
+        return 20;
     }
 
     @Override

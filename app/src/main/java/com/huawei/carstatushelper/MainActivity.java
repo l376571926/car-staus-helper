@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private OliCostHelper oliCostHelper;
     private ActivityMainBinding binding;
 
+    private int totalMileageValue;//总里程
+
+    private String totalFuelConPHM;//累计平均油耗
+    private String totalElecConPHM;//累计平均电耗
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -437,6 +442,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onTotalMileageValueChanged(int totalMileageValue) {
             super.onTotalMileageValueChanged(totalMileageValue);
             KLog.e("总行驶里程：" + totalMileageValue + " km");
+            MainActivity.this.totalMileageValue = totalMileageValue;
             binding.totalMileageTv.setText(totalMileageValue + " km");
             binding.totalHevMileageTv.setText((totalMileageValue - statisticDevice.getEVMileageValue()) + "km");
         }
@@ -464,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         /**
-         * 监听行驶时间变化
+         * 监听总行驶时间变化
          * @param value {0,9999.9}h
          */
         @Override
@@ -490,8 +496,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onTotalFuelConPHMChanged(double value) {
             super.onTotalFuelConPHMChanged(value);
-            binding.totalFuelConPhmTv.setText(format.format(value) + "L/100KM");
+            String s = format.format(value) + "(监听值)";
+            totalFuelConPHM = s;
+//            binding.totalFuelConPhmTv.setText(s);
         }
+
 
         /**
          * 监听最近百公里电耗变化
@@ -510,7 +519,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onTotalElecConPHMChanged(double value) {
             super.onTotalElecConPHMChanged(value);
-            binding.totalElecConPhmTv.setText(format.format(value) + "KWH/100KM");
+            String s = format.format(value) + "(监听值)";
+            totalElecConPHM = s;
+//            binding.totalElecConPhmTv.setText(s);
         }
 
         /**
@@ -714,6 +725,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         double totalElecConValue = statisticDevice.getTotalElecConValue();
         absBYDAutoStatisticListener.onTotalElecConChanged(totalElecConValue);
 
+        //总行驶时间
+        double drivingTimeValue = statisticDevice.getDrivingTimeValue();
+        absBYDAutoStatisticListener.onDrivingTimeChanged(drivingTimeValue);
+
+        //最近50公里电耗
+        double lastElecConPHMValue = statisticDevice.getLastElecConPHMValue();
+        absBYDAutoStatisticListener.onLastElecConPHMChanged(lastElecConPHMValue);
+        //最近50公里油耗
+        double lastFuelConPHMValue = statisticDevice.getLastFuelConPHMValue();
+        absBYDAutoStatisticListener.onLastFuelConPHMChanged(lastFuelConPHMValue);
+        //累计平均电耗
+        double totalElecConPHMValue = statisticDevice.getTotalElecConPHMValue();
+        absBYDAutoStatisticListener.onTotalElecConPHMChanged(totalElecConPHMValue);
+        //累计平均油耗
+        double totalFuelConPHMValue = statisticDevice.getTotalFuelConPHMValue();
+        absBYDAutoStatisticListener.onTotalFuelConPHMChanged(totalFuelConPHMValue);
+
         //当前档位
         int gearboxAutoModeType = gearboxDevice.getGearboxAutoModeType();
         absBYDAutoGearboxListener.onGearboxAutoModeTypeChanged(gearboxAutoModeType);
@@ -724,6 +752,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         KLog.e("当前功率：" + enginePower + " kw");
         binding.enginePowerTv.setText(enginePower + " kw");
         binding.enginePowerEpv.setVelocity(enginePower);
+
+        updateEnergyCost();
+    }
+
+    private void updateEnergyCost() {
+        //燃油消耗总量
+        double totalFuelConValue = statisticDevice.getTotalFuelConValue();
+        //电消耗总量
+        double totalElecConValue = statisticDevice.getTotalElecConValue();
+
+        String elec_listener_and_cacu = totalElecConPHM + " " + format.format((totalElecConValue * 100.0f / totalMileageValue)) + "(计算值)";
+        String fuel_listener_and_cacu = totalFuelConPHM + " " + format.format((totalFuelConValue * 100.0f / totalMileageValue)) + "(计算值)";
+        binding.totalElecConPhmTv.setText(elec_listener_and_cacu);
+        binding.totalFuelConPhmTv.setText(fuel_listener_and_cacu);
     }
 
     private String getEnergyModeName(int energyMode) {

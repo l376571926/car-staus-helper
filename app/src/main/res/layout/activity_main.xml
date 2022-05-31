@@ -229,7 +229,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="行驶时间：" />
+                android:text="总行驶时间：" />
 
             <TextView
                 android:id="@+id/driving_time_tv"
@@ -246,7 +246,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="最近百公里电耗：" />
+                android:text="最近50公里电耗：" />
 
             <TextView
                 android:id="@+id/last_elec_con_phm_tv"
@@ -263,7 +263,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="最近百公里油耗：" />
+                android:text="最近50公里油耗：" />
 
             <TextView
                 android:id="@+id/last_fuel_con_phm_tv"
@@ -286,8 +286,12 @@
                 android:id="@+id/total_elec_con_phm_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 KWH/100KM" />
+                android:text="0" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" KWH/100KM" />
         </LinearLayout>
 
         <LinearLayout
@@ -303,8 +307,12 @@
                 android:id="@+id/total_fuel_con_phm_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 L/100KM" />
+                android:text="0" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" L/100KM" />
         </LinearLayout>
 
         <Button
@@ -401,73 +409,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/total_fuel_elec_ll"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="瞬时\n油耗：" />
-
-                    <ProgressBar
-                        android:id="@+id/real_fuel_pb"
-                        style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/real_fuel_pb_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="0 L" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="瞬时\n电耗：" />
-
-                    <ProgressBar
-                        android:id="@+id/real_elec_pb"
-                        style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/real_elec_pb_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="0 KWH" />
-                </LinearLayout>
-
-            </LinearLayout>
-
         </LinearLayout>
 
     </LinearLayout>
