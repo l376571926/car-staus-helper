@@ -322,7 +322,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="测试" />
+            android:text="测试"
+            tools:visibility="visible"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

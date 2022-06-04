@@ -532,18 +532,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onElecDrivingRangeChanged(int value) {
             super.onElecDrivingRangeChanged(value);
             KLog.e("电量续航里程：" + value + "km");
-            binding.powerMileageTv.setText(value + "km");
+            updateElecDrivingRange(value);
         }
+
 
         /**
          * 监听燃油续航里程变化
-         * @param fuelDrivingRangeValue
+         * @param value
          */
         @Override
-        public void onFuelDrivingRangeChanged(int fuelDrivingRangeValue) {
-            super.onFuelDrivingRangeChanged(fuelDrivingRangeValue);
-            KLog.e("燃油续航里程：" + fuelDrivingRangeValue + "km");
-            binding.fuelMileageTv.setText(fuelDrivingRangeValue + "km");
+        public void onFuelDrivingRangeChanged(int value) {
+            super.onFuelDrivingRangeChanged(value);
+            KLog.e("燃油续航里程：" + value + "km");
+            updateFuelDrivingRange(value);
         }
 
         /**
@@ -554,9 +555,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onFuelPercentageChanged(int fuelPercentageValue) {
             super.onFuelPercentageChanged(fuelPercentageValue);
             KLog.e("燃油续航百分比：" + fuelPercentageValue);
-            binding.fuelPercentPb.setMax(100);
-            binding.fuelPercentPb.setProgress(fuelPercentageValue);
-            binding.fuelPbTv.setText(fuelPercentageValue + "%");
+            updateFuelPercent(fuelPercentageValue);
         }
 
         /**
@@ -566,16 +565,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onElecPercentageChanged(double value) {
             super.onElecPercentageChanged(value);
-            double ret;
-            if (value <= 1) {
-                ret = value * 100;
-            } else {
-                ret = value;
-            }
-            KLog.e("电量续航百分比：" + ret);
-            binding.elecPercentPb.setMax(100);
-            binding.elecPercentPb.setProgress(((int) ret));
-            binding.elecPbTv.setText(format.format(ret) + "%");
+            updateElecPercent(value);
         }
 
         /**
@@ -745,6 +735,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //当前档位
         int gearboxAutoModeType = gearboxDevice.getGearboxAutoModeType();
         absBYDAutoGearboxListener.onGearboxAutoModeTypeChanged(gearboxAutoModeType);
+
+        //剩余电量百分比
+        updateElecPercent(statisticDevice.getElecPercentageValue());
+        //剩余电续航里程
+        updateElecDrivingRange(statisticDevice.getElecDrivingRangeValue());
+        //剩余燃油百分比
+        updateFuelPercent(statisticDevice.getFuelPercentageValue());
+        //剩余燃油续航里程
+        updateFuelDrivingRange(statisticDevice.getFuelDrivingRangeValue());
+    }
+
+    /**
+     * 电量续航里程
+     *
+     * @param value
+     */
+    private void updateElecDrivingRange(int value) {
+        binding.powerMileageTv.setText(value + "km");
+    }
+
+    /**
+     * 燃油续航里程
+     *
+     * @param value
+     */
+    private void updateFuelDrivingRange(int value) {
+        binding.fuelMileageTv.setText(value + "km");
+    }
+
+    /**
+     * 燃油百分比
+     *
+     * @param fuelPercentageValue
+     */
+    private void updateFuelPercent(int fuelPercentageValue) {
+        binding.fuelPercentPb.setMax(100);
+        binding.fuelPercentPb.setProgress(fuelPercentageValue);
+        binding.fuelPbTv.setText(fuelPercentageValue + "%");
+    }
+
+    /**
+     * 电量百分比
+     *
+     * @param value
+     */
+    private void updateElecPercent(double value) {
+        double ret;
+        if (value <= 1) {
+            ret = value * 100;
+        } else {
+            ret = value;
+        }
+        KLog.e("电量续航百分比：" + ret);
+        binding.elecPercentPb.setMax(100);
+        binding.elecPercentPb.setProgress(((int) ret));
+        binding.elecPbTv.setText(format.format(ret) + "%");
     }
 
     private void updateEnginePower() {
